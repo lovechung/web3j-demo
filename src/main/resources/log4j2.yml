@@ -1,0 +1,46 @@
+Configuration:
+  status: error
+
+  Properties: # 定义全局变量
+    Property:
+      - name: log.level
+        value: debug
+      - name: log.path
+        value: D:\logs
+      - name: project.name
+        value: blockchain-demo
+      - name: log.pattern
+        value: "%d{yyyy-MM-dd HH:mm:ss.SSS}  %highlight{%5p} --- %clr{${sys:PID}}{magenta} [%15.15t] %clr{%-40.40c{1.}}{cyan} : %m%n%xwEx"
+      - name: log.file.pattern
+        value: "${log.path}/${project.name}/${project.name}-%d{yyyyMMdd}-%i.log.gz"
+
+  Appenders:
+    Console:  #输出到控制台
+      name: CONSOLE
+      target: SYSTEM_OUT
+      ThresholdFilter:
+        level: trace
+        # 控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）
+        onMatch: ACCEPT
+        onMismatch: DENY
+      PatternLayout:
+        pattern: ${log.pattern}
+    RollingFile: # 输出到文件，超过128MB归档
+      - name: ROLLING_FILE
+        ignoreExceptions: false
+        fileName: ${log.path}/${project.name}.log
+        filePattern: ${log.file.pattern}
+        PatternLayout:
+          pattern: ${log.pattern}
+        Policies:
+          SizeBasedTriggeringPolicy:
+            size: "128 MB"
+        DefaultRolloverStrategy:
+          max: 100 # 最多同一文件夹下的文件数
+
+  Loggers:
+    Root:
+      level: ${log.level}
+      AppenderRef:
+        - ref: CONSOLE
+        - ref: ROLLING_FILE

@@ -1,0 +1,14 @@
+spring:
+    application:
+        name: blockchain-demo
+
+server:
+    port: 8000
+
+web3j:
+#    client-address: https://mainnet.infura.io/v0ZhsxRDiSgjJZL5W3HF
+    client-address: https://rinkeby.infura.io
+
+wallet:
+    filepath: D:\temp\
+    pwd: 123456
