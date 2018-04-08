@@ -16,10 +16,6 @@ public class TestController {
 
     @GetMapping("/demo")
     public void demo() {
-        try {
-            walletService.run();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+
     }
 }

@@ -6,9 +6,11 @@ server:
     port: 8000
 
 web3j:
-#    client-address: https://mainnet.infura.io/v0ZhsxRDiSgjJZL5W3HF
-    client-address: https://rinkeby.infura.io
+    admin-client: true
+    client-address: https://mainnet.infura.io/v0ZhsxRDiSgjJZL5W3HF
+#    client-address: https://rinkeby.infura.io
 
 wallet:
     filepath: D:\temp\
     pwd: 123456
+    test: '0xb823434ab59fdbe6b02cba971f2fff5ee5f569cc'
