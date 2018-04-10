@@ -34,4 +34,6 @@ public class WalletServiceTest {
 //        walletService.getTxByHash(txHash);
         walletService.tx();
     }
+
+
 }

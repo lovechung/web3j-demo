@@ -1,6 +1,21 @@
 spring:
     application:
         name: blockchain-demo
+    redis:
+        cluster:
+            nodes: 120.78.150.87:7000,120.78.150.87:7001,120.78.150.87:7002,120.78.150.87:7003,120.78.150.87:7004,120.78.150.87:7005
+            max-redirects: 3
+        lettuce:
+            pool:
+                min-idle: 0
+                max-idle: 8
+                max-active: 8
+                max-wait: -1ms
+            shutdown-timeout: 100ms
+    rabbitmq:
+        host: rabbit.iishoni.com
+        username: admin
+        password: admin
 
 server:
     port: 8000
@@ -14,3 +29,6 @@ wallet:
     filepath: D:\temp\
     pwd: 123456
     test: '0xb823434ab59fdbe6b02cba971f2fff5ee5f569cc'
+
+
+
