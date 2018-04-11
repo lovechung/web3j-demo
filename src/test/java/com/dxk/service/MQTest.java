@@ -1,5 +1,6 @@
 package com.dxk.service;
 
+import com.dxk.model.User;
 import com.dxk.mq.Sender;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
@@ -8,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -19,12 +21,7 @@ public class MQTest {
 
     @Test
     public void testSend() {
-//        String exchange = "demo.fanout";
-//        String routingKey = "";
-//        String exchange = "demo.direct";
-//        String routingKey = "direct.msg";
-        String exchange = "demo.topic";
-        String routingKey = "topic.msg.123";
-        sender.send(exchange, routingKey);
+        User user = new User(1L, "测试1", 28, LocalDate.now());
+        sender.send(user);
     }
 }

@@ -1,4 +1,4 @@
-package com.dxk.utils;
+package com.dxk.config;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
@@ -52,18 +52,10 @@ public class RedisConfig extends CachingConfigurerSupport {
         // 初始化RedisCacheWriter
         RedisCacheWriter redisCacheWriter = RedisCacheWriter.nonLockingRedisCacheWriter(connectionFactory);
 
-        // 解决redis中文乱码的序列化器
-        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
-        ObjectMapper objectMapper = new ObjectMapper();
-        objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
-        jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-
-        RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair.fromSerializer(jackson2JsonRedisSerializer);
+        RedisSerializationContext.SerializationPair<Object> pair = RedisSerializationContext.SerializationPair.fromSerializer(this.getSerializer());
         RedisCacheConfiguration defaultCacheConfig = RedisCacheConfiguration.defaultCacheConfig().serializeValuesWith(pair);
         // 设置默认过期时间是30秒
         defaultCacheConfig.entryTtl(Duration.ofSeconds(60));
-
         return new RedisCacheManager(redisCacheWriter, defaultCacheConfig);
     }
 
@@ -72,7 +64,22 @@ public class RedisConfig extends CachingConfigurerSupport {
         RedisTemplate<Object, Object> redisTemplate = new RedisTemplate<>();
         redisTemplate.setConnectionFactory(redisConnectionFactory);
 
-        // 使用Jackson2JsonRedisSerialize 替换默认序列化
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = this.getSerializer();
+        // 设置value的序列化规则和 key的序列化规则
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setHashKeySerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setDefaultSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setEnableDefaultSerializer(true);
+        redisTemplate.afterPropertiesSet();
+        return redisTemplate;
+    }
+
+    /**
+     * 使用Jackson2JsonRedisSerialize 替换默认序列化
+     */
+    private Jackson2JsonRedisSerializer getSerializer() {
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper objectMapper = new ObjectMapper();
         JavaTimeModule javaTimeModule = new JavaTimeModule();
@@ -83,16 +90,7 @@ public class RedisConfig extends CachingConfigurerSupport {
         objectMapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
         objectMapper.enableDefaultTyping(ObjectMapper.DefaultTyping.NON_FINAL);
         jackson2JsonRedisSerializer.setObjectMapper(objectMapper);
-
-        // 设置value的序列化规则和 key的序列化规则
-        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setKeySerializer(new StringRedisSerializer());
-        redisTemplate.setHashKeySerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setDefaultSerializer(jackson2JsonRedisSerializer);
-        redisTemplate.setEnableDefaultSerializer(true);
-        redisTemplate.afterPropertiesSet();
-        return redisTemplate;
+        return jackson2JsonRedisSerializer;
     }
 
 }
