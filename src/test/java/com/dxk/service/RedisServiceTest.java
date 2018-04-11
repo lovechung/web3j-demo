@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 import java.util.*;
 
 @RunWith(SpringRunner.class)
@@ -33,17 +34,18 @@ public class RedisServiceTest {
     public void testSetList() {
         List<String> list = Arrays.asList("a1", "a2", "a3");
         List<User> users = Arrays.asList(
-                new User(1L, "测试1", 28),
-                new User(2L, "测试2", 18),
-                new User(3L, "测试3", 24));
+                new User(1L, "测试1", 28, LocalDate.now()),
+                new User(2L, "测试2", 18, LocalDate.parse("2014-02-28")),
+                new User(3L, "测试3", 24, LocalDate.of(1991, 12, 12)));
         redisService.setList("users", users);
 //        redisService.setList("list", list);
     }
 
     @Test
     public void testGetList() {
-        List<String> list = redisService.getList("list");
-        log.info("=====================list:{}", list);
+//        List<String> list = redisService.getList("list");
+        List<User> users = redisService.getList("users");
+        log.info("=====================users:{}", users);
     }
 
     @Test

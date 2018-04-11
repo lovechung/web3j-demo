@@ -19,10 +19,12 @@ public class MQTest {
 
     @Test
     public void testSend() {
-//        String exchange = "directExchange";
+//        String exchange = "demo.fanout";
+//        String routingKey = "";
+//        String exchange = "demo.direct";
 //        String routingKey = "direct.msg";
-        String exchange = "fanoutExchange";
-        String routingKey = "";
+        String exchange = "demo.topic";
+        String routingKey = "topic.msg.123";
         sender.send(exchange, routingKey);
     }
 }

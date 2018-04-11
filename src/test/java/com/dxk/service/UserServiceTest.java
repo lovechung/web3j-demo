@@ -8,6 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.annotation.Resource;
+import java.time.LocalDate;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -25,12 +26,12 @@ public class UserServiceTest {
 
     @Test
     public void testUpdate() {
-        userService.update(new User(1L, "更新", 33));
+        userService.update(new User(1L, "更新", 33, LocalDate.now()));
     }
 
     @Test
     public void testSave() {
-        userService.save(new User(4L, "新增", 33));
+        userService.save(new User(4L, "新增", 33, LocalDate.now()));
     }
 
     @Test

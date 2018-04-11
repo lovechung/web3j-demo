@@ -12,12 +12,12 @@ public class RabbitConfig {
      */
     @Bean
     public Queue queue1() {
-        return new Queue("demo.queue1");
+        return new Queue("demo.queue1", true);
     }
 
     @Bean
     public Queue queue2() {
-        return new Queue("demo.queue2");
+        return new Queue("demo.queue2", true);
     }
 
     /**
@@ -33,15 +33,15 @@ public class RabbitConfig {
         return new FanoutExchange("demo.fanout");
     }
 
-//    @Bean
-//    public DirectExchange directExchange() {
-//        return new DirectExchange("demo.direct");
-//    }
-//
-//    @Bean
-//    public TopicExchange topicExchange() {
-//        return new TopicExchange("demo.topic");
-//    }
+    @Bean
+    public DirectExchange directExchange() {
+        return new DirectExchange("demo.direct");
+    }
+
+    @Bean
+    public TopicExchange topicExchange() {
+        return new TopicExchange("demo.topic");
+    }
 
     /**
      * 声明队列与交换机的绑定关系
@@ -56,23 +56,23 @@ public class RabbitConfig {
         return BindingBuilder.bind(queue2).to(fanoutExchange);
     }
 
-//    @Bean
-//    public Binding bindingDirectExchange1(Queue queue1, DirectExchange directExchange) {
-//        return BindingBuilder.bind(queue1).to(directExchange).with("direct.msg");
-//    }
-//
-//    @Bean
-//    public Binding bindingDirectExchange2(Queue queue2, DirectExchange directExchange) {
-//        return BindingBuilder.bind(queue2).to(directExchange).with("123");
-//    }
-//
-//    @Bean
-//    public Binding bindingTopicExchange1(Queue queue1, TopicExchange topicExchange) {
-//        return BindingBuilder.bind(queue1).to(topicExchange).with("topic.msg");
-//    }
-//
-//    @Bean
-//    public Binding bindingTopicExchange2(Queue queue2, TopicExchange topicExchange) {
-//        return BindingBuilder.bind(queue2).to(topicExchange).with("topic.#");
-//    }
+    @Bean
+    public Binding bindingDirectExchange1(Queue queue1, DirectExchange directExchange) {
+        return BindingBuilder.bind(queue1).to(directExchange).with("direct.msg");
+    }
+
+    @Bean
+    public Binding bindingDirectExchange2(Queue queue2, DirectExchange directExchange) {
+        return BindingBuilder.bind(queue2).to(directExchange).with("123");
+    }
+
+    @Bean
+    public Binding bindingTopicExchange1(Queue queue1, TopicExchange topicExchange) {
+        return BindingBuilder.bind(queue1).to(topicExchange).with("topic.msg");
+    }
+
+    @Bean
+    public Binding bindingTopicExchange2(Queue queue2, TopicExchange topicExchange) {
+        return BindingBuilder.bind(queue2).to(topicExchange).with("topic.msg.#");
+    }
 }

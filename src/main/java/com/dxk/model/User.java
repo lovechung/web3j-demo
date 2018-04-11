@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -15,4 +16,5 @@ public class User implements Serializable {
     private Long id;
     private String name;
     private Integer age;
+    private LocalDate birthday;
 }

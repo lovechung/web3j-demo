@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -55,9 +56,9 @@ public class UserService {
     private Map<Long, User> getData() {
         log.info("===============从数据源获取===============");
         Map<Long, User> map = new HashMap<>();
-        map.put(1L, new User(1L, "测试1", 28));
-        map.put(2L, new User(2L, "测试2", 18));
-        map.put(3L, new User(3L, "测试3", 24));
+        map.put(1L, new User(1L, "测试1", 28, LocalDate.now()));
+        map.put(2L, new User(2L, "测试2", 18, LocalDate.parse("2014-02-28")));
+        map.put(3L, new User(3L, "测试3", 24, LocalDate.of(1991, 12, 12)));
         return map;
     }
 }
